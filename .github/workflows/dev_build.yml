@@ -9,7 +9,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@er
+        uses: actions/checkout@v4
         with:
             persist-credentials: false
 
@@ -19,18 +19,18 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
-           distribution: 'temurin'
-           java-version: 21
+          distribution: 'temurin'
+          java-version: 21
 
       - name: Build with Gradle
-        run: chmod +x gradlew && ./gradlew build
+        run: ./gradlew build
 
       - name: Release
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "snapshot"
+          automatic_release_tag: snapshot
           prerelease: true
-          title: "Development Build"
+          title: "Dev Build"
           files: |
-            build cross-platform/libs/*.jar
+            ./build/libs/*.jar
