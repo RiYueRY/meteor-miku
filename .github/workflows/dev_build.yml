@@ -1,5 +1,5 @@
 name: Publish Development Build
-on:
+on: 
   push:
   workflow_dispatch:
 
@@ -11,7 +11,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-            persist-credentials: false
+          persist-credentials: false
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -22,15 +22,19 @@ jobs:
           distribution: 'temurin'
           java-version: 21
 
+      # 修复权限问题
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
       - name: Build with Gradle
         run: ./gradlew build
 
       - name: Release
         uses: marvinpinto/action-automatic-releases@latest
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          repo_token: '${{ secrets.GITHUB_TOKEN }}'
           automatic_release_tag: snapshot
           prerelease: true
-          title: "Dev Build"
+          title: Dev Build
           files: |
             ./build/libs/*.jar
